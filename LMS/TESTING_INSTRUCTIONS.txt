@@ -1,0 +1,38 @@
+LIBRARY MANAGEMENT SYSTEM - BUILD AND TEST
+
+1. Requirements on Ubuntu/Debian:
+   sudo apt update
+   sudo apt install -y g++ make libgtest-dev valgrind lcov
+
+2. From the LMS directory:
+   make           # Build app
+   make run       # Interactive console
+   make smoke     # Noninteractive CLI smoke test (uses temporary data)
+   make test      # Google Test unit/functional tests (uses temporary data)
+   make coverage  # gcov branch and line reports; HTML if lcov is installed
+   make valgrind  # Memcheck on GTest executable
+   make helgrind  # Helgrind on GTest executable
+   make clean     # Remove build outputs only
+
+3. Coverage:
+   gcov output: build/coverage/
+   HTML (when available): build/coverage/html/index.html
+   Coverage target compiles library.cpp, security.cpp, storage.cpp.
+   main.cpp is exercised by smoke.sh but is not included in the gcov target.
+   Do not claim whole-project or 100% coverage based on this report.
+
+4. Helgrind:
+   The application is single-threaded. Helgrind is included for requested
+   verification, but it does not demonstrate thread safety under concurrent use.
+
+5. Safety:
+   tests use isolated temporary files, not data/library.records.
+   Existing data/library.records is included unchanged in this archive.
+   It contains password hashes and salts. Keep the archive and repository private.
+
+6. Verification performed when preparing this archive:
+   PASS: make clean && make
+   PASS: make smoke
+   NOT RUN: GTest execution, coverage, Valgrind Memcheck and Helgrind.
+   This preparation environment has no Google Test headers, Valgrind or lcov.
+   Commands are provided for running them on a supported Linux environment.
